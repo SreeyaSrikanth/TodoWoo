@@ -1,0 +1,28 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+<h1>TODO: {{ todo.title }}</h1>
+<form method="POST">
+    {% csrf_token %}
+{{ form.as_p }}
+<button type="submit">SAVE</button>
+</form>
+
+<form method="POST" action="{% url 'deletetodo' todo.id %}">
+    {% csrf_token %}
+<button type="submit">DELETE</button>
+</form>
+
+{% if todo.is_complete %}
+<form method="POST" action="{% url 'incompletetodo' todo.id %}">
+    {% csrf_token %}
+<button type="submit">MARK AS INCOMPLETE</button>
+</form>
+{% else %}
+<form method="POST" action="{% url 'completetodo' todo.id %}">
+    {% csrf_token %}
+<button type="submit">MARK AS COMPLETE</button>
+</form>
+{% endif %}
+
+{% endblock %}

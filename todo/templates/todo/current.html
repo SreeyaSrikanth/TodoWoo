@@ -1,0 +1,39 @@
+{% extends 'todo/base.html' %}
+
+{% block content %}
+<h1>CURRENT</h1>
+{% if todos %}
+<ul>
+    {% for todo in todos %}
+    <li>
+        {% if todo.is_important %}<b>{% endif %}
+        <a href="{% url 'viewtodo' todo.id %}" >{{ todo.title }}</a>
+        {% if todo.is_important %}</b>{% endif %}
+        {% if todo.memo %} - {{ todo.memo }} {% endif %}
+        {% if todo.due_time < now %}
+            <div style="color:red">
+        {% endif %}
+        <p>Due: {{ todo.due_time|date:'M j Y H:i' }}</p>
+        {% if todo.due_time < now %}
+            </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+{% else %}
+<p>You have no pending todos</p>
+{% endif %}
+
+{% if todoscomp %}
+<h1>COMPLETED</h1>
+<ul>
+    {% for todocomp in todoscomp %}
+    <li>
+        <a href="{% url 'viewtodo' todocomp.id %}" >{{ todocomp.title }}</a>
+        <p>Completed: {{ todocomp.complete_time|date:'M j Y H:i' }}</p>
+    </li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+{% endblock %}
